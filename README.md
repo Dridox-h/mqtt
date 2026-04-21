@@ -44,4 +44,3 @@ docker compose logs -f subscriber publisher
 Le broker est configuré sur le port par défaut `1883`. Vous pouvez modifier les variables d'environnement dans le fichier `docker-compose.yaml` si nécessaire (notamment `MQTT_BROKER`).
 
 ---
-Développé avec ❤️ pour simplifier les tests d'infrastructure IoT.
