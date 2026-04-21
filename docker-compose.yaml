@@ -1,0 +1,41 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - mqtt_test
+    restart: unless-stopped
+
+  subscriber:
+    build: .
+    container_name: subscriber
+    environment:
+      - MQTT_BROKER=mosquitto
+      - PYTHONUNBUFFERED=1
+    command: python subscriber.py
+    networks:
+      - mqtt_test
+    depends_on:
+      - mosquitto
+    restart: unless-stopped
+
+  publisher:
+    build: .
+    container_name: publisher
+    environment:
+      - MQTT_BROKER=mosquitto
+      - PYTHONUNBUFFERED=1
+    command: python publisher.py
+    networks:
+      - mqtt_test
+    depends_on:
+      - mosquitto
+    restart: unless-stopped
+
+networks:
+  mqtt_test:
+    driver: bridge
